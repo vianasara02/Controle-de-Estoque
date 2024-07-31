@@ -1,0 +1,58 @@
+# BIBLIOTECAS USADAS DO GRAFO
+
+import networkx as nx
+import matplotlib.pyplot as plt
+
+class Produto:
+    def __init__(self, nome, quantidade):
+        self.nome = nome
+        self.quantidade = quantidade
+
+    def verificar_estoque(self):
+        if self.quantidade < 10:
+            print(f'O estoque de {self.nome} está abaixo do indicado!')
+#ESTOQUE
+estoque = {
+    'produto1': Produto('Coca Cola', 15),
+    'produto2': Produto('Fanta Uva', 5),
+    'produto3': Produto('Fanta Laranja', 20),
+    'produto4': Produto('Guaraná', 8) 
+}
+
+names = [produto.nome for produto in estoque.values()]
+quantities = [produto.quantidade for produto in estoque.values()]
+
+plt.figure(figsize=(10, 6))  # Define o tamanho da figura
+plt.bar(names, quantities, color='skyblue')  # Cria o gráfico de barras
+plt.xlabel('Produto')  # Define o rótulo do eixo x
+plt.ylabel('Quantidade')  # Define o rótulo do eixo y
+plt.title('Quantidade de Produtos em Estoque')  # Define o título do gráfico
+plt.xticks(rotation=45)  # Rotaciona os rótulos do eixo x para melhor visualização
+plt.tight_layout()  # Ajusta o layout para garantir que todos os elementos sejam visíveis
+
+#Exibindo Gráfico
+plt.show()
+
+# GRAFO
+G = nx.Graph()
+
+# NÓS DO GRAFO
+for chave, produto in estoque.items():
+    G.add_node(chave, nome=produto.nome, quantidade=produto.quantidade)
+
+# IMPRESSÃO DO GRAFO
+print("Nós do Grafo:")
+for node, data in G.nodes(data=True):
+    print(f"Nome: {data['nome']}, Quantidade: {data['quantidade']}")
+
+# O GRAFO MOSTRANDO AS IMPRESSÕES
+print("\nVerificando estoque:")
+for node, data in G.nodes(data=True):
+    Produto(data['nome'], data['quantidade']).verificar_estoque()
+
+# VISU
+names = [data['nome'] for node, data in G.nodes(data=True)]
+quantities = [data['quantidade'] * 100 for node, data in G.nodes(data=True)] 
+
+nx.draw(G, with_labels=True, labels=dict(zip(G.nodes(), names)), node_size=quantities, node_color='skyblue')
+plt.show()
